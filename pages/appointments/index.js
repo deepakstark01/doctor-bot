@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
-import { getDb } from '../../lib/db';
+import { getDb } from '../../lib/database';
 import { getAuthToken } from '../../lib/auth';
 import { Calendar, Clock, User, AlertCircle, CheckCircle, X } from 'lucide-react';
 
