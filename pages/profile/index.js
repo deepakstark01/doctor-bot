@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
-import { getDb } from '../../lib/database';
+import { getDb } from '../../lib/db';
 import { getAuthToken, setAuthToken, requireAuth } from '../../lib/auth';
 import { isValidEmail, isValidPhone } from '../../lib/utils';
 import { User, Mail, Phone, Lock, Save, Edit, AlertCircle, CheckCircle } from 'lucide-react';

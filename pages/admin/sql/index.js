@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
 import Modal, { ConfirmModal } from '../../../components/Modal';
 import { getAuthToken, requireAdmin } from '../../../lib/auth';
-import { executeQuery, getDatabaseHealth, resetDatabase, clearDatabase } from '../../../lib/database';
+import { executeQuery, getDatabaseHealth, resetDatabase, clearDatabase } from '../../../lib/db';
 import { 
   Play, 
   Database, 

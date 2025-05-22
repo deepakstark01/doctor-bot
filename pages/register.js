@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import { getDb } from '../lib/database';
+import { getDb } from '../lib/db';
 import { setAuthToken, getAuthToken } from '../lib/auth';
 import { isValidEmail, isValidPhone } from '../lib/utils';
 import { Stethoscope, Eye, EyeOff, AlertCircle, CheckCircle, User, Mail, Phone, Lock } from 'lucide-react';
