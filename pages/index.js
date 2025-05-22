@@ -1,115 +1,313 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Layout from '../components/Layout';
+import { getAuthToken } from '../lib/auth';
+import { 
+  Calendar, 
+  Clock, 
+  Users, 
+  Shield, 
+  Star, 
+  CheckCircle, 
+  ArrowRight,
+  Heart,
+  Stethoscope,
+  Activity,
+  Phone,
+  Mail,
+  MapPin,
+  ChevronRight
+} from 'lucide-react';
 
 export default function Home() {
-  return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              pages/index.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalDoctors: 0,
+    totalAppointments: 0,
+    totalPatients: 0,
+    specialties: 0
+  });
+  const router = useRouter();
+
+  useEffect(() => {
+    const currentUser = getAuthToken();
+    setUser(currentUser);
+    setLoading(false);
+    loadStats();
+  }, []);
+
+  const loadStats = async () => {
+    try {
+      // These would be actual API calls in a real application
+      setStats({
+        totalDoctors: 150,
+        totalAppointments: 2500,
+        totalPatients: 1200,
+        specialties: 12
+      });
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  };
+
+  const features = [
+    {
+      icon: Calendar,
+      title: 'Easy Booking',
+      description: 'Book appointments with your preferred doctors in just a few clicks'
+    },
+    {
+      icon: Clock,
+      title: '24/7 Access',
+      description: 'Access our platform anytime, anywhere to manage your healthcare'
+    },
+    {
+      icon: Shield,
+      title: 'Secure & Private',
+      description: 'Your medical information is protected with industry-standard security'
+    },
+    {
+      icon: Users,
+      title: 'Expert Doctors',
+      description: 'Connect with qualified healthcare professionals across various specialties'
+    }
+  ];
+
+  const specialties = [
+    { name: 'Cardiology', icon: Heart, color: 'bg-red-100 text-red-600' },
+    { name: 'General Medicine', icon: Stethoscope, color: 'bg-blue-100 text-blue-600' },
+    { name: 'Pediatrics', icon: Users, color: 'bg-green-100 text-green-600' },
+    { name: 'Orthopedics', icon: Activity, color: 'bg-purple-100 text-purple-600' },
+    { name: 'Dermatology', icon: Shield, color: 'bg-yellow-100 text-yellow-600' },
+    { name: 'Neurology', icon: Activity, color: 'bg-indigo-100 text-indigo-600' }
+  ];
+
+  const testimonials = [
+    {
+      name: 'Sarah Johnson',
+      role: 'Patient',
+      content: 'This platform made it so easy to find and book appointments with specialists. Highly recommended!',
+      rating: 5
+    },
+    {
+      name: 'Dr. Michael Chen',
+      role: 'Cardiologist',
+      content: 'The system is intuitive and helps me manage my practice more efficiently.',
+      rating: 5
+    },
+    {
+      name: 'Emily Davis',
+      role: 'Patient',
+      content: 'Great experience! The doctors are professional and the booking process is seamless.',
+      rating: 5
+    }
+  ];
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center min-h-64">
+          <div className="loading-spinner h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        {/* Hero Section */}
+        <section className="relative py-20 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-indigo-600/10"></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Your Health,{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  Our Priority
+                </span>
+              </h1>
+              <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Connect with qualified healthcare professionals and book appointments effortlessly. 
+                Experience healthcare that's convenient, secure, and patient-centered.
+              </p>
+              
+              {!user && (
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                  <Link
+                    href="/register"
+                    className="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all transform hover:scale-105 flex items-center space-x-2 text-lg font-semibold"
+                  >
+                    <span>Get Started Today</span>
+                    <ArrowRight className="h-5 w-5" />
+                  </Link>
+                  <Link
+                    href="/doctors"
+                    className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl hover:bg-gray-50 transition-colors text-lg font-semibold"
+                  >
+                    Browse Doctors
+                  </Link>
+                </div>
+              )}
+
+              {user && user.role === 'patient' && (
+                <div className="mb-12">
+                  <Link
+                    href="/doctors"
+                    className="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all transform hover:scale-105 inline-flex items-center space-x-2 text-lg font-semibold"
+                  >
+                    <Calendar className="h-5 w-5" />
+                    <span>Book Your Appointment</span>
+                    <ArrowRight className="h-5 w-5" />
+                  </Link>
+                </div>
+              )}
+
+              {/* Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{stats.totalDoctors}+</div>
+                  <div className="text-gray-600">Expert Doctors</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{stats.totalPatients}+</div>
+                  <div className="text-gray-600">Happy Patients</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{stats.totalAppointments}+</div>
+                  <div className="text-gray-600">Appointments</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{stats.specialties}+</div>
+                  <div className="text-gray-600">Specialties</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Why Choose Our Platform?
+              </h2>
+              <p className="text-xl text-gray-600">
+                Experience healthcare that's designed around your needs
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {features.map((feature, index) => (
+                <div key={index} className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+                  <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600 transition-colors">
+                    <feature.icon className="h-8 w-8 text-blue-600 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Specialties Section */}
+        <section id="specialties" className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Medical Specialties
+              </h2>
+              <p className="text-xl text-gray-600">
+                Find doctors across various medical specialties
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {specialties.map((specialty, index) => (
+                <Link
+                  key={index}
+                  href="/doctors"
+                  className="bg-white rounded-xl p-6 hover:shadow-lg transition-all duration-300 transform hover:scale-105 group"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${specialty.color}`}>
+                      <specialty.icon className="h-6 w-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900">{specialty.name}</h3>
+                      <p className="text-gray-600">Find specialists</p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section id="testimonials" className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                What Our Users Say
+              </h2>
+              <p className="text-xl text-gray-600">
+                Real experiences from patients and healthcare providers
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="bg-gray-50 rounded-xl p-6">
+                  <div className="flex items-center mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
+                  <div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                    <div className="text-gray-600 text-sm">{testimonial.role}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        {!user && (
+          <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Get Started?
+              </h2>
+              <p className="text-xl text-blue-100 mb-8">
+                Join thousands of patients who trust us with their healthcare needs
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link
+                  href="/register"
+                  className="bg-white text-blue-600 px-8 py-4 rounded-xl hover:bg-gray-100 transition-colors font-semibold"
+                >
+                  Create Your Account
+                </Link>
+                <Link
+                  href="/doctors"
+                  className="border-2 border-white text-white px-8 py-4 rounded-xl hover:bg-white hover:text-blue-600 transition-colors font-semibold"
+                >
+                  Browse Doctors
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
+      </div>
+    </Layout>
   );
 }
