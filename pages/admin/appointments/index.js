@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import AdminLayout from '../../../components/AdminLayout';
-import { getDb } from '../../../lib/db';
+import { getDb } from '../../../lib/database';
 import { getAuthToken } from '../../../lib/auth';
 import { 
   Calendar, 
