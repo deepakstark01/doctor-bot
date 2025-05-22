@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
 import Modal, { ConfirmModal } from '../../../components/Modal';
 import { getAuthToken, requireAdmin } from '../../../lib/auth';
-import { executeQuery } from '../../../lib/database';
+import { executeQuery } from '../../../lib/db';
 import { formatDate } from '../../../lib/utils';
 import { 
   Search, 
