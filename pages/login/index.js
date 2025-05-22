@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Layout from '../components/Layout';
-import { setAuthToken, getAuthToken } from '../lib/auth';
-import { findActiveUserByUsernameAndRole } from '../lib/queries';
+import Layout from '../../components/Layout';
+import { setAuthToken, getAuthToken } from '../../lib/auth';
+import { findActiveUserByUsernameAndRole } from '../../lib/queries';
 import { Stethoscope, Eye, EyeOff, AlertCircle, User, Lock } from 'lucide-react';
 
 export default function Login() {
